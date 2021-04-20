@@ -1,0 +1,8 @@
+{
+  "name": "StoxManager",
+  "displayName": "Stox Manager",
+  "android": {
+    "package": "com.stoxmanager",
+    "googleServicesFile": "./android/app/google-services.json"
+  }
+}
