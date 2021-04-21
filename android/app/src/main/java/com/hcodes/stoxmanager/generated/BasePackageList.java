@@ -9,7 +9,8 @@ public class BasePackageList {
     return Arrays.<Package>asList(
         new expo.modules.constants.ConstantsPackage(),
         new expo.modules.google.signin.GoogleSignInPackage(),
-        new expo.modules.splashscreen.SplashScreenPackage()
+        new expo.modules.splashscreen.SplashScreenPackage(),
+        new expo.modules.sqlite.SQLitePackage()
     );
   }
 }

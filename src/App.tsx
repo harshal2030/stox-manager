@@ -7,6 +7,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {StoreState} from './global';
 import {authenticate} from './global/actions/auth';
 
+import {initTable} from './db';
+
 type Props = {
   authUser: GoogleSignIn.GoogleUser | null;
   authenticate: typeof authenticate;
@@ -21,9 +23,11 @@ class App extends React.Component<Props> {
 
   componentDidMount() {
     this.initSignIn();
+    initTable();
   }
 
   initSignIn = async () => {
+    await Splash.preventAutoHideAsync();
     await GoogleSignIn.initAsync();
 
     const user = await GoogleSignIn.signInSilentlyAsync();
@@ -32,14 +36,6 @@ class App extends React.Component<Props> {
       this.props.authenticate(user);
     }
     await Splash.hideAsync();
-  };
-
-  signIn = async () => {
-    const data = await GoogleSignIn.signInAsync();
-
-    if (data.type === 'success' && data.user) {
-      this.props.authenticate(data.user);
-    }
   };
 
   render() {
