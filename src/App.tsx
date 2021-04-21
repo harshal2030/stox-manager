@@ -1,10 +1,19 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
 import * as GoogleSignIn from 'expo-google-sign-in';
+import {connect} from 'react-redux';
+import {createStackNavigator} from '@react-navigation/stack';
 
-import {GoogleButton} from './components';
+import {StoreState} from './global';
+import {authenticate} from './global/actions/auth';
 
-class App extends React.Component {
+type Props = {
+  authUser: GoogleSignIn.GoogleUser | null;
+  authenticate: typeof authenticate;
+};
+
+const Stack = createStackNavigator();
+
+class App extends React.Component<Props> {
   componentDidMount() {
     this.initSignIn();
   }
@@ -12,35 +21,44 @@ class App extends React.Component {
   initSignIn = async () => {
     await GoogleSignIn.initAsync();
 
-    const trial = await GoogleSignIn.signInSilentlyAsync();
-    console.log(trial);
+    const user = await GoogleSignIn.signInSilentlyAsync();
+
+    if (user) {
+      this.props.authenticate(user);
+    }
+  };
+
+  signIn = async () => {
+    const data = await GoogleSignIn.signInAsync();
+
+    if (data.type === 'success' && data.user) {
+      this.props.authenticate(data.user);
+    }
   };
 
   render() {
     return (
-      <View style={styles.root}>
-        <View style={styles.image} />
-        <GoogleButton
-          onPress={() => console.log('pressed')}
-          buttonText="Continue with Google"
-        />
-      </View>
+      <Stack.Navigator headerMode="none">
+        {this.props.authUser ? (
+          <Stack.Screen
+            name="Home"
+            component={require('./screens/Home').default}
+          />
+        ) : (
+          <Stack.Screen
+            name="Auth"
+            component={require('./screens/Auth').default}
+          />
+        )}
+      </Stack.Navigator>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  root: {
-    padding: 20,
-  },
-  image: {
-    height: 400,
-    width: '100%',
-    backgroundColor: 'red',
-    borderColor: 'transparent',
-    borderWidth: 1,
-    borderRadius: 3,
-  },
-});
+const mapStateToProps = (store: StoreState) => {
+  return {
+    authUser: store.auth,
+  };
+};
 
-export default App;
+export default connect(mapStateToProps, {authenticate})(App);

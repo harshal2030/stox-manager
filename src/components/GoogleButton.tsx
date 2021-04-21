@@ -24,7 +24,7 @@ class GoogleButton extends React.Component<Props> {
         style={{...styles.googleStyle, ...this.props.buttonViewStyle}}
         onPress={this.props.onPress}>
         <Image
-          source={require('../images/google.png')}
+          source={require('../images/g-logo.png')}
           style={{...styles.imageIconStyle, ...this.props.logoStyle}}
         />
         <Text style={{...styles.textStyle, ...this.props.textStyle}}>
@@ -41,26 +41,30 @@ const styles = StyleSheet.create({
   googleStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: '#ffffff',
     borderWidth: 0.5,
     borderColor: '#fff',
-    height: 40,
-    width: 220,
-    borderRadius: 5,
+    height: 60,
+    width: '98%',
+    borderRadius: 3,
     margin: 5,
   },
   imageIconStyle: {
-    padding: 10,
-    marginLeft: 15,
-    height: 25,
-    width: 25,
+    marginLeft: 2,
+    height: 55,
+    width: 50,
+    borderWidth: 0.5,
+    borderColor: 'transparent',
+    borderRadius: 1,
     resizeMode: 'stretch',
   },
   textStyle: {
-    color: '#575757',
-    marginLeft: 15,
-    marginRight: 20,
+    color: '#ffff',
+    marginLeft: 30,
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'Roboto',
   },
 });
 
