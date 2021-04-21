@@ -191,7 +191,7 @@ dependencies {
     // From node_modules
     implementation platform('com.google.firebase:firebase-bom:27.0.0')
     implementation 'com.google.firebase:firebase-analytics'
-    addUnimodulesDependencies([exclude: ['expo-image-loader', 'expo-permissions', 'expo-file-system', 'expo-asset', 'expo-constants']])
+    addUnimodulesDependencies([exclude: ['expo-image-loader', 'expo-permissions', 'expo-file-system', 'expo-asset']])
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
