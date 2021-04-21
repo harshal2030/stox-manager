@@ -1,5 +1,6 @@
 import React from 'react';
 import * as GoogleSignIn from 'expo-google-sign-in';
+import * as Splash from 'expo-splash-screen';
 import {connect} from 'react-redux';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -14,6 +15,10 @@ type Props = {
 const Stack = createStackNavigator();
 
 class App extends React.Component<Props> {
+  constructor(props: Props) {
+    super(props);
+  }
+
   componentDidMount() {
     this.initSignIn();
   }
@@ -26,6 +31,7 @@ class App extends React.Component<Props> {
     if (user) {
       this.props.authenticate(user);
     }
+    await Splash.hideAsync();
   };
 
   signIn = async () => {

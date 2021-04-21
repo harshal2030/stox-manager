@@ -4,5 +4,11 @@
   "android": {
     "package": "com.stoxmanager",
     "googleServicesFile": "./android/app/google-services.json"
+  },
+  "expo": {
+    "splash": {
+      "image": "./src/images/ic_launcher.png",
+      "backgroundColor": "#DCE7E7"
+    }
   }
 }

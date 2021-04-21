@@ -22,6 +22,7 @@ class GoogleButton extends React.Component<Props> {
     return (
       <TouchableOpacity
         style={{...styles.googleStyle, ...this.props.buttonViewStyle}}
+        activeOpacity={0.8}
         onPress={this.props.onPress}>
         <Image
           source={require('../images/g-logo.png')}

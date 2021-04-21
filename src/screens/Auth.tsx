@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import * as GoogleSignIn from 'expo-google-sign-in';
 import {connect} from 'react-redux';
 
@@ -25,7 +25,10 @@ class Auth extends React.Component<Props> {
   render() {
     return (
       <View style={styles.root}>
-        <View style={styles.image} />
+        <Image
+          source={require('../images/ic_launcher.png')}
+          style={styles.image}
+        />
         <GoogleButton
           onPress={this.signIn}
           buttonText="Continue with Google"
@@ -39,11 +42,14 @@ class Auth extends React.Component<Props> {
 const styles = StyleSheet.create({
   root: {
     padding: 20,
+    backgroundColor: '#DCE7E7',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
-    height: 400,
+    height: 300,
     width: '100%',
-    backgroundColor: 'red',
     borderColor: 'transparent',
     borderWidth: 1,
     borderRadius: 3,

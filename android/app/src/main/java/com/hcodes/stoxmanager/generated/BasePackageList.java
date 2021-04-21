@@ -8,7 +8,8 @@ public class BasePackageList {
   public List<Package> getPackageList() {
     return Arrays.<Package>asList(
         new expo.modules.constants.ConstantsPackage(),
-        new expo.modules.google.signin.GoogleSignInPackage()
+        new expo.modules.google.signin.GoogleSignInPackage(),
+        new expo.modules.splashscreen.SplashScreenPackage()
     );
   }
 }
