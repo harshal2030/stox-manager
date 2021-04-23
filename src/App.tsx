@@ -8,13 +8,14 @@ import {StoreState} from './global';
 import {authenticate} from './global/actions/auth';
 
 import {initTable} from './db';
+import {RootStackParamList} from './navigators';
 
 type Props = {
   authUser: GoogleSignIn.GoogleUser | null;
   authenticate: typeof authenticate;
 };
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 class App extends React.Component<Props> {
   constructor(props: Props) {
@@ -42,10 +43,16 @@ class App extends React.Component<Props> {
     return (
       <Stack.Navigator headerMode="none">
         {this.props.authUser ? (
-          <Stack.Screen
-            name="Home"
-            component={require('./screens/Home').default}
-          />
+          <>
+            <Stack.Screen
+              name="Home"
+              component={require('./screens/Home').default}
+            />
+            <Stack.Screen
+              name="Items"
+              component={require('./screens/Items').default}
+            />
+          </>
         ) : (
           <Stack.Screen
             name="Auth"
