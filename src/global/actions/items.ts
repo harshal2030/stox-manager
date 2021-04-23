@@ -18,6 +18,16 @@ type insertItemAction = {
   payload: Item;
 };
 
+type updateItemAction = {
+  type: ActionType.updateItem;
+  payload: Item;
+};
+
+type deleteItemAction = {
+  type: ActionType.deleteItem;
+  payload: Item;
+};
+
 const getItems = (items: Item[]): getItemAction => {
   return {
     type: ActionType.getItems,
@@ -32,6 +42,25 @@ const insertItem = (item: Item): insertItemAction => {
   };
 };
 
-export {insertItem, getItems, ActionType};
+const updateItem = (item: Item): updateItemAction => {
+  return {
+    type: ActionType.updateItem,
+    payload: item,
+  };
+};
 
-export type {insertItemAction, getItemAction};
+const deleteItem = (item: Item): deleteItemAction => {
+  return {
+    type: ActionType.deleteItem,
+    payload: item,
+  };
+};
+
+export {insertItem, getItems, updateItem, deleteItem, ActionType};
+
+export type {
+  insertItemAction,
+  getItemAction,
+  updateItemAction,
+  deleteItemAction,
+};

@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     color: '#000',
+    width: '69%',
   },
   icon: {
     alignSelf: 'center',
@@ -58,13 +59,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: greyWithAlpha(0.4),
     paddingBottom: 8,
+    flexWrap: 'wrap',
   },
   content: {
     marginTop: 8,
     paddingLeft: 5,
   },
   contentText: {
-    fontSize: 16,
+    fontSize: 17,
     color: '#000',
   },
 });

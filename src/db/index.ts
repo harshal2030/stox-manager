@@ -38,7 +38,28 @@ const insertInItems = (
   );
 };
 
-export {db, initTable, insertInItems};
+const updateTable = (
+  id: string,
+  name: string,
+  stock: number,
+  price?: number | null,
+  cb?: (e: SQlite.SQLError) => void,
+) => {
+  db.transaction((tx) => {
+    tx.executeSql(
+      'UPDATE items SET name = ?, stock = ?, price = ? WHERE id = ?',
+      [name, stock, price, id],
+    );
+  }, cb);
+};
+
+const deleteFromTable = (id: string, cb?: (e: SQlite.SQLError) => void) => {
+  db.transaction((tx) => {
+    tx.executeSql('DELETE FROM items WHERE id = ?', [id]);
+  }, cb);
+};
+
+export {db, initTable, insertInItems, updateTable, deleteFromTable};
 
 // eslint-disable-next-line no-undef
 export type {Item};

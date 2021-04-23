@@ -25,7 +25,7 @@ class Auth extends React.Component<Props> {
   render() {
     return (
       <View style={styles.root}>
-        <Image source={require('../images/logo.png')} style={styles.image} />
+        <Image source={require('../images/logo.png')} />
         <GoogleButton
           onPress={this.signIn}
           buttonText="Continue with Google"
@@ -43,13 +43,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  image: {
-    height: 300,
-    width: '100%',
-    borderColor: 'transparent',
-    borderWidth: 1,
-    borderRadius: 3,
   },
 });
 

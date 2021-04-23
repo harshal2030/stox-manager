@@ -41,7 +41,7 @@ class Home extends React.Component<Props> {
         stock={item.stock}
         item={item.name}
         price={item.price}
-        onEditPress={() => this.props.navigation.navigate('Items')}
+        onEditPress={() => this.props.navigation.navigate('Items', {item})}
       />
     );
   };
@@ -64,7 +64,7 @@ class Home extends React.Component<Props> {
           icon="plus"
           color="#fff"
           style={styles.fab}
-          onPress={() => console.log('hii')}
+          onPress={() => this.props.navigation.navigate('Items')}
         />
       </View>
     );
