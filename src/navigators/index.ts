@@ -6,4 +6,5 @@ export type RootStackParamList = {
   Items: {
     item?: Item;
   };
+  Groups: undefined;
 };

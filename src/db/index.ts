@@ -11,6 +11,11 @@ type Item = {
   price: number | null;
 };
 
+type Group = {
+  id: string;
+  name: string;
+};
+
 const initTable = () => {
   db.transaction(
     (tx) => {
@@ -29,10 +34,6 @@ const initTable = () => {
       );
       tx.executeSql(
         "INSERT INTO groups (id, name) SELECT 'default', 'default' WHERE NOT EXISTS (SELECT * FROM groups WHERE id = 'default')",
-      );
-      tx.executeSql(
-        'INSERT INTO items (id, group_id, name, buy, sell) VALUES(?, ?, ?, ?, ?)',
-        [nanoid(10), 'default', 'trial', 23, 15],
       );
     },
     (e) => console.log(e),
@@ -80,7 +81,38 @@ const deleteFromTable = (id: string, cb?: (e: SQlite.SQLError) => void) => {
   }, cb);
 };
 
-export {db, initTable, insertInItems, updateTable, deleteFromTable};
+const addGroupInTable = (name: string) => {
+  db.transaction((tx) => {
+    tx.executeSql('INSERT INTO groups (id, name) VALUES (?, ?)', [
+      nanoid(10),
+      name,
+    ]);
+  });
+};
+
+const updateGroupInTable = (id: string, name: string) => {
+  db.transaction((tx) => {
+    tx.executeSql('UPDATE groups SET name = ? WHERE id = ?', [name, id]);
+  });
+};
+
+const deleteGroupFromTables = (id: string) => {
+  db.transaction((tx) => {
+    tx.executeSql('DELETE FROM groups WHERE id = ?', [id]);
+    tx.executeSql('DELETE FROM items WHERE group_id = ?', [id]);
+  });
+};
+
+export {
+  db,
+  initTable,
+  insertInItems,
+  updateTable,
+  deleteFromTable,
+  addGroupInTable,
+  updateGroupInTable,
+  deleteGroupFromTables,
+};
 
 // eslint-disable-next-line no-undef
-export type {Item};
+export type {Item, Group};

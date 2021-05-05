@@ -52,6 +52,10 @@ class App extends React.Component<Props> {
               name="Items"
               component={require('./screens/Items').default}
             />
+            <Stack.Screen
+              name="Groups"
+              component={require('./screens/Groups').default}
+            />
           </>
         ) : (
           <Stack.Screen

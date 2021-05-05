@@ -3,14 +3,17 @@ import {View, StyleSheet, FlatList} from 'react-native';
 import {Appbar, FAB, DefaultTheme, Searchbar} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Picker} from '@react-native-picker/picker';
+import FA from 'react-native-vector-icons/FontAwesome';
 
 import {ItemCard} from '../components';
 
 import {StoreState} from '../global';
 import {getItems} from '../global/actions/items';
+import {setGroups} from '../global/actions/group';
 import {RootStackParamList} from '../navigators';
 
-import {db, Item} from '../db';
+import {db, Item, Group} from '../db';
 
 type navigation = StackNavigationProp<RootStackParamList>;
 
@@ -18,10 +21,13 @@ type Props = {
   items: Item[];
   navigation: navigation;
   getItems: typeof getItems;
+  setGroups: typeof setGroups;
+  groups: Group[];
 };
 
 type State = {
   q: string;
+  selected: string | null;
 };
 
 class Home extends React.Component<Props, State> {
@@ -30,6 +36,7 @@ class Home extends React.Component<Props, State> {
 
     this.state = {
       q: '',
+      selected: null,
     };
   }
 
@@ -45,11 +52,19 @@ class Home extends React.Component<Props, State> {
             _array: Item[];
           };
 
-          console.log(_array);
-
           this.props.getItems(_array);
         },
       );
+
+      tx.executeSql('SELECT * FROM groups', [], (_, {rows}) => {
+        const {_array} = (rows as unknown) as {
+          length: number;
+          _array: Group[];
+        };
+
+        this.props.setGroups(_array);
+        this.setState({selected: _array[0].id});
+      });
     });
   }
 
@@ -77,6 +92,25 @@ class Home extends React.Component<Props, State> {
             onChangeText={(q) => this.setState({q})}
           />
         </Appbar.Header>
+
+        <View style={styles.pickerContainer}>
+          <Picker
+            style={{width: '90%'}}
+            itemStyle={styles.pickerItem}
+            selectedValue={this.state.selected}
+            mode="dropdown"
+            onValueChange={(val) => this.setState({selected: val})}>
+            {this.props.groups.map((val) => (
+              <Picker.Item label={val.name} value={val.id} key={val.id} />
+            ))}
+          </Picker>
+
+          <FA
+            name="pencil-square"
+            size={24}
+            onPress={() => this.props.navigation.navigate('Groups')}
+          />
+        </View>
 
         <FlatList
           data={data}
@@ -106,12 +140,23 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
+  pickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  pickerItem: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });
 
 const mapStateToProps = (state: StoreState) => {
   return {
     items: state.items,
+    groups: state.groups,
   };
 };
 
-export default connect(mapStateToProps, {getItems})(Home);
+export default connect(mapStateToProps, {getItems, setGroups})(Home);
