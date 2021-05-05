@@ -16,7 +16,7 @@ const ItemCard = (props: Props) => {
     <View style={styles.parent}>
       <View style={styles.header}>
         <View style={{flexDirection: 'row'}}>
-          <FA5 name="box" color="#000" style={styles.icon} size={26} />
+          <FA5 name="box" color="#000" style={styles.icon} size={22} />
           <Text style={styles.itemText}>{props.item}</Text>
         </View>
 
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffff',
   },
   itemText: {
-    fontSize: 30,
+    fontSize: 20,
     marginLeft: 10,
     fontWeight: 'bold',
     alignSelf: 'center',

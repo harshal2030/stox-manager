@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
-import {Appbar, FAB, DefaultTheme} from 'react-native-paper';
+import {Appbar, FAB, DefaultTheme, Searchbar} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';
 
@@ -20,25 +20,43 @@ type Props = {
   getItems: typeof getItems;
 };
 
-class Home extends React.Component<Props> {
+type State = {
+  q: string;
+};
+
+class Home extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      q: '',
+    };
+  }
+
   componentDidMount() {
     db.transaction((tx) => {
-      tx.executeSql('SELECT * FROM items', [], (_, {rows}) => {
-        const {_array} = (rows as unknown) as {
-          length: number;
-          item(i: number): Item;
-          _array: Item[];
-        };
+      tx.executeSql(
+        'SELECT items.* FROM items INNER JOIN groups ON groups.id = items.group_id',
+        [],
+        (_, {rows}) => {
+          const {_array} = (rows as unknown) as {
+            length: number;
+            item(i: number): Item;
+            _array: Item[];
+          };
 
-        this.props.getItems(_array);
-      });
+          console.log(_array);
+
+          this.props.getItems(_array);
+        },
+      );
     });
   }
 
   renderItem = ({item}: {item: Item}) => {
     return (
       <ItemCard
-        stock={item.stock}
+        stock={item.buy - item.sell}
         item={item.name}
         price={item.price}
         onEditPress={() => this.props.navigation.navigate('Items', {item})}
@@ -47,15 +65,21 @@ class Home extends React.Component<Props> {
   };
 
   render() {
+    const data = this.props.items.filter((val) =>
+      val.name.toLowerCase().includes(this.state.q.toLowerCase()),
+    );
     return (
       <View style={styles.root}>
         <Appbar.Header>
-          <Appbar.Content title="Stox Manager" />
-          <Appbar.Action icon="magnify" onPress={() => console.log('hii')} />
+          <Searchbar
+            value={this.state.q}
+            placeholder="Search"
+            onChangeText={(q) => this.setState({q})}
+          />
         </Appbar.Header>
 
         <FlatList
-          data={this.props.items}
+          data={data}
           keyExtractor={(i) => i.id}
           renderItem={this.renderItem}
         />
