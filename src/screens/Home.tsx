@@ -43,7 +43,7 @@ class Home extends React.Component<Props, State> {
   componentDidMount() {
     db.transaction((tx) => {
       tx.executeSql(
-        'SELECT items.* FROM items INNER JOIN groups ON groups.id = items.group_id',
+        'SELECT items.* FROM items',
         [],
         (_, {rows}) => {
           const {_array} = (rows as unknown) as {
@@ -52,6 +52,7 @@ class Home extends React.Component<Props, State> {
             _array: Item[];
           };
 
+          console.log(_array);
           this.props.getItems(_array);
         },
       );
@@ -63,6 +64,7 @@ class Home extends React.Component<Props, State> {
         };
 
         this.props.setGroups(_array);
+        console.log(_array);
         this.setState({selected: _array[0].id});
       });
     });
@@ -80,8 +82,10 @@ class Home extends React.Component<Props, State> {
   };
 
   render() {
-    const data = this.props.items.filter((val) =>
-      val.name.toLowerCase().includes(this.state.q.toLowerCase()),
+    const data = this.props.items.filter(
+      (val) =>
+        val.name.toLowerCase().includes(this.state.q.toLowerCase()) &&
+        val.group_id === this.state.selected,
     );
     return (
       <View style={styles.root}>

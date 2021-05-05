@@ -5,13 +5,15 @@ import {
   getItemAction,
   updateItemAction,
   deleteItemAction,
+  deleteItemByGroupAction,
 } from '../actions/items';
 
 type Action =
   | insertItemAction
   | getItemAction
   | updateItemAction
-  | deleteItemAction;
+  | deleteItemAction
+  | deleteItemByGroupAction;
 
 const items = (state: Item[] = [], action: Action) => {
   switch (action.type) {
@@ -30,6 +32,8 @@ const items = (state: Item[] = [], action: Action) => {
       return temp;
     case ActionType.deleteItem:
       return state.filter((val) => val.id !== action.payload.id);
+    case ActionType.deleteItemByGroup:
+      return state.filter((val) => val.group_id !== action.payload);
     default:
       return state;
   }

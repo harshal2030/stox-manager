@@ -5,6 +5,7 @@ enum ActionType {
   getItems = 'get_items',
   updateItem = 'update_item',
   deleteItem = 'delete_item',
+  deleteItemByGroup = 'delete_by_group',
   insertItem = 'insert_item',
 }
 
@@ -26,6 +27,11 @@ type updateItemAction = {
 type deleteItemAction = {
   type: ActionType.deleteItem;
   payload: Item;
+};
+
+type deleteItemByGroupAction = {
+  type: ActionType.deleteItemByGroup;
+  payload: string;
 };
 
 const getItems = (items: Item[]): getItemAction => {
@@ -56,11 +62,26 @@ const deleteItem = (item: Item): deleteItemAction => {
   };
 };
 
-export {insertItem, getItems, updateItem, deleteItem, ActionType};
+const deleteItemByGroup = (group_id: string): deleteItemByGroupAction => {
+  return {
+    type: ActionType.deleteItemByGroup,
+    payload: group_id,
+  };
+};
+
+export {
+  insertItem,
+  getItems,
+  updateItem,
+  deleteItem,
+  deleteItemByGroup,
+  ActionType,
+};
 
 export type {
   insertItemAction,
   getItemAction,
+  deleteItemByGroupAction,
   updateItemAction,
   deleteItemAction,
 };

@@ -9,4 +9,4 @@ const greyWithAlpha = (alpha: number): string => {
   return `rgba(108,122,137, ${alpha})`;
 };
 
-export {greyWithAlpha, flatRed};
+export {greyWithAlpha, flatRed, commonGrey};

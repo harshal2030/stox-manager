@@ -1,5 +1,4 @@
 import * as SQlite from 'expo-sqlite';
-import {nanoid} from 'nanoid';
 
 const db = SQlite.openDatabase('stox.db');
 
@@ -9,6 +8,7 @@ type Item = {
   buy: number;
   sell: number;
   price: number | null;
+  group_id: string;
 };
 
 type Group = {
@@ -42,6 +42,7 @@ const initTable = () => {
 
 const insertInItems = (
   id: string,
+  group_id: string,
   name: string,
   buy: number,
   sell?: number,
@@ -51,8 +52,8 @@ const insertInItems = (
   db.transaction(
     (tx) => {
       tx.executeSql(
-        'INSERT INTO items(id ,name, buy, sell, price) VALUES(?, ?, ?, ?, ?)',
-        [id, name, buy, sell, price],
+        'INSERT INTO items(id, group_id, name, buy, sell, price) VALUES(?, ?, ?, ?, ?, ?)',
+        [id, group_id, name, buy, sell, price],
       );
     },
     (e) => cb!(e),
@@ -61,6 +62,7 @@ const insertInItems = (
 
 const updateTable = (
   id: string,
+  group_id: string,
   name: string,
   buy: number,
   sell?: number,
@@ -69,8 +71,8 @@ const updateTable = (
 ) => {
   db.transaction((tx) => {
     tx.executeSql(
-      'UPDATE items SET name = ?, buy = ?, sell=?, price = ? WHERE id = ?',
-      [name, buy, sell, price, id],
+      'UPDATE items SET name = ?, group_id = ?, buy = ?, sell=?, price = ? WHERE id = ?',
+      [name, group_id, buy, sell, price, id],
     );
   }, cb);
 };
@@ -81,12 +83,9 @@ const deleteFromTable = (id: string, cb?: (e: SQlite.SQLError) => void) => {
   }, cb);
 };
 
-const addGroupInTable = (name: string) => {
+const addGroupInTable = (id: string, name: string) => {
   db.transaction((tx) => {
-    tx.executeSql('INSERT INTO groups (id, name) VALUES (?, ?)', [
-      nanoid(10),
-      name,
-    ]);
+    tx.executeSql('INSERT INTO groups (id, name) VALUES (?, ?)', [id, name]);
   });
 };
 
